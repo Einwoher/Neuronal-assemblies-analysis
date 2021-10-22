@@ -368,9 +368,9 @@ for i=1:length(CommFrPercentage)
 end;
 
 [r p]=corrcoef(inta,frb)
-save('CommFractionVsIntNoLim','InterEventDur','CommFrPercentage');
-save('CommFractionVsInt3sLim','inta','frb');
-save('SpVsSpNoIntLim','SpEventSize','SpEngCellsRatio');
+% save('CommFractionVsIntNoLim','InterEventDur','CommFrPercentage');
+% save('CommFractionVsInt3sLim','inta','frb');
+% save('SpVsSpNoIntLim','SpEventSize','SpEngCellsRatio');
 
 
 %% Plot raster and correlation

@@ -1,5 +1,5 @@
  %the number of the trial
-choice = menu('Choose a mode','Spike detection','Raster plot analysis');
+choice = menu('Choose a mode','Spike detection','Raster plot analysis without stimulus','Raster plot analysis with auditory stimulus');
 
 
 currentFolder = pwd;
@@ -67,6 +67,18 @@ end;
 %     region.location=region.location(indexvector);
 %     
  end;
+ 
+ if choice==3
+    filename = uigetfile('*.mat');
+     load(filename);
+     filename = filename(1:end-4);
+     
+     audstim = uigetfile('*.mat');
+     load(audstim);
+     audstim = audstim(1:end-4);
+end;
+
+
  listing3 = dir('*avgimg.png');
 importedData=uiimport(char(listing3.name));
 
@@ -75,6 +87,9 @@ importedData=uiimport(char(listing3.name));
       fprintf('Waiting for importedData\n')
     end
 region.image = cell2mat(struct2cell(importedData));
+
+
+    
 %% 
 plateauindex=0;
 schmutz=0;
@@ -108,7 +123,7 @@ end;
  spk = zeros(size(nt));
  dec = zeros(size(nt));
 
-if choice==2
+if (choice==2)||(choice==3)
     TrNum=sscanf(filename,'region%d');
 for c = 1:size(spk,1)
     spk(c,region.onsets{c}) = 1;
@@ -149,7 +164,7 @@ plotonset = uicontrol('Style','pushbutton','Units','normalized','String','Plot o
      'Callback','PlotOnsetsUnic');
 
 Clustering = uicontrol('Style','pushbutton','Units','normalized','String','Clustering','Position',[.3 .8 .1 0.04],'FontSize',12,...
-     'Callback','ClusteringAnton');
+     'Callback','ClusteringForSpikeAnalysis');
 SpikeDetecting = uicontrol('Style','pushbutton','Units','normalized','String','All neurons spikes','Position',[.3 .9 .1 0.04],'FontSize',12,...
      'Callback','MLSpikeDetection');
 
@@ -163,9 +178,9 @@ SpikeDetecting = uicontrol('Style','pushbutton','Units','normalized','String','A
  
  uicontrol('Style','text','Units','normalized','String','Event #','Position',[.79 0.75 .05 0.04],'FontSize',12,'FontWeight','Bold',...
     'HorizontalAlignment','right','BackgroundColor',[.8 .8 .8]);
-uicontrol('Style','text','Units','normalized','String','From','Position',[.79 0.85 .05 0.04],'FontSize',12,'FontWeight','Bold',...
+uicontrol('Style','text','Units','normalized','String','From,ms','Position',[.78 0.85 .05 0.04],'FontSize',12,'FontWeight','Bold',...
     'HorizontalAlignment','right','BackgroundColor',[.8 .8 .8]);
-uicontrol('Style','text','Units','normalized','String','To','Position',[.84 0.85 .05 0.04],'FontSize',12,'FontWeight','Bold',...
+uicontrol('Style','text','Units','normalized','String','To,ms','Position',[.84 0.85 .05 0.04],'FontSize',12,'FontWeight','Bold',...
     'HorizontalAlignment','right','BackgroundColor',[.8 .8 .8]);
  EventsToPlot = uicontrol('Style','edit','Units','normalized','String','all','Position',[0.8 .7 .05 0.04],'FontSize',12,'FontWeight','Bold',...
       'BackgroundColor',[1 1 1],'HorizontalAlignment','left');
